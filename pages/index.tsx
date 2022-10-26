@@ -56,7 +56,6 @@ const HomePage: NextPage = () => {
         <button>Send Feedback</button>
       </form>
       <hr />
-      <button onClick={getFeedbackHandler}>Load Feedbacks</button>
       {feedbackItems.length > 0 && (
         <ul>
           {feedbackItems?.map(({ id, email, feedback }) => (

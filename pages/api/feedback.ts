@@ -7,7 +7,7 @@ const getFeedbackPath = () => {
   return path.join(process.cwd(), 'data', 'feedback.json');
 };
 
-const getFeedbackData = () => {
+export const getFeedbackData = () => {
   const filePath = getFeedbackPath();
   const fileData = fs.readFileSync(filePath, 'utf-8');
   const data: Feedback[] = JSON.parse(fileData.toString());
