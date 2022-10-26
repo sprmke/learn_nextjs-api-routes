@@ -1,7 +1,9 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { NextPage } from 'next';
+import { Feedback } from '../types/feedback';
 
 const HomePage: NextPage = () => {
+  const [feedbackItems, setFeedbackItems] = useState<Feedback[] | []>([]);
   const emailInputRef = useRef<HTMLInputElement>(null!);
   const feedbackInputRef = useRef<HTMLTextAreaElement>(null!);
 
@@ -25,8 +27,19 @@ const HomePage: NextPage = () => {
     });
 
     const data = await response.json();
-    console.log('data::', data);
+    setFeedbackItems(data.feedback);
   };
+
+  const getFeedbackHandler = async () => {
+    const response = await fetch('/api/feedback');
+
+    const data = await response.json();
+    setFeedbackItems(data.feedback);
+  };
+
+  useEffect(() => {
+    getFeedbackHandler();
+  }, []);
 
   return (
     <div>
@@ -42,6 +55,18 @@ const HomePage: NextPage = () => {
         </div>
         <button>Send Feedback</button>
       </form>
+      <hr />
+      <button onClick={getFeedbackHandler}>Load Feedbacks</button>
+      {feedbackItems.length > 0 && (
+        <ul>
+          {feedbackItems?.map(({ id, email, feedback }) => (
+            <li key={id}>
+              <p>{email}</p>
+              <p>{feedback}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

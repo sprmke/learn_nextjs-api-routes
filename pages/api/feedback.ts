@@ -1,11 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Feedback } from '../../types/feedback';
 
-type Feedback = {
-  id: string;
-  email: string;
-  feedback: string;
+const getFeedbackPath = () => {
+  return path.join(process.cwd(), 'data', 'feedback.json');
+};
+
+const getFeedbackData = () => {
+  const filePath = getFeedbackPath();
+  const fileData = fs.readFileSync(filePath, 'utf-8');
+  const data: Feedback[] = JSON.parse(fileData.toString());
+
+  return data;
 };
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,16 +26,18 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     // store data in a file
-    const filePath = path.join(process.cwd(), 'data', 'feedback.json');
-    const fileData = fs.readFileSync(filePath, 'utf-8');
-    const data: Feedback[] = JSON.parse(fileData.toString());
+    const data = getFeedbackData();
     data.push(newFeedback);
-    fs.writeFileSync(filePath, JSON.stringify(data));
+    fs.writeFileSync(getFeedbackPath(), JSON.stringify(data));
 
     // send feedback response
-    res.status(201).json({ message: 'Success!', feedback: newFeedback });
+    res.status(201).json({ message: 'Success!', feedback: data });
   } else {
-    res.status(200).json({ message: 'This works' });
+    // get data from a file
+    const data = getFeedbackData();
+
+    // send feedback response
+    res.status(200).json({ message: 'Success!', feedback: data });
   }
 };
 
