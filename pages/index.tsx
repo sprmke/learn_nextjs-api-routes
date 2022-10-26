@@ -5,11 +5,27 @@ const HomePage: NextPage = () => {
   const emailInputRef = useRef<HTMLInputElement>(null!);
   const feedbackInputRef = useRef<HTMLTextAreaElement>(null!);
 
-  const submitFormHandler = (event: FormEvent) => {
+  const submitFormHandler = async (event: FormEvent) => {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredFeedback = feedbackInputRef.current.value;
+
+    const reqBody = {
+      email: enteredEmail,
+      feedback: enteredFeedback,
+    };
+
+    const response = await fetch('/api/feedback', {
+      method: 'POST',
+      body: JSON.stringify(reqBody),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    console.log('data::', data);
   };
 
   return (
