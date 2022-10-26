@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { Feedback } from '../../types/feedback';
-import { getFeedbackData } from '../api/feedback';
+import { getFeedbackData } from '../api/feedback/index';
 
 const FeedbackPage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -10,7 +10,7 @@ const FeedbackPage: NextPage<
     null
   );
   const getFeedbackHandler = async (id: string) => {
-    const response = await fetch(`/api/${id}`);
+    const response = await fetch(`/api/feedback/${id}`);
     const data = await response.json();
     const { feedback }: { feedback: Feedback } = data;
 

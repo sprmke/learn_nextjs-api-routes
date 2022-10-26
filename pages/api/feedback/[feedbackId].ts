@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getFeedbackData } from './feedback';
+import { getFeedbackData } from './index';
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {

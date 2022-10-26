@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Feedback } from '../../types/feedback';
+import { Feedback } from '../../../types/feedback';
 
 const getFeedbackPath = () => {
   return path.join(process.cwd(), 'data', 'feedback.json');
